@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+    - main
+    
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  test:
+    name: To run an application 
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: ['20.0.0']
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node_version }}
+
+    - name: npm install, build and test
+      run:
+        npm install
+        npm run build --if-present
+        npm test
